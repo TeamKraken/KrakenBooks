@@ -29,6 +29,15 @@
 </head>
 
 <body ng-controller="IndexController">
+  <!-- This is for FB -->
+  <div id="fb-root"></div>
+  <script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.4&appId=1003257643052032";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));</script>
 
   <header>
     <ul id="navigation">
@@ -52,6 +61,7 @@
         <div id="buttons">
           <input type="button" value="Login" ng-click='login()' />
           <input type="button" value="Signup" ng-click='clickSignup()'/>
+          <div class="fb-login-button" data-max-rows="1" data-size="large" data-show-faces="false" data-auto-logout-link="true"></div>
         </div>
         <div class="errortext" ng-show="error">{{errorMessage}}</div>
         </br>
@@ -69,6 +79,7 @@
 
         <select ng-model="authInfo.org" class='selectOrg' ng-options="org for org in orgs"></select>
         <input type="button" value="signup" ng-click=signup() />
+        <div class="fb-login-button" data-max-rows="1" data-size="large" data-show-faces="false" data-auto-logout-link="true"></div>
         </br>
         <p>Already have account? <a href="#login_form" ng-click=clickLogin()>Login</a></p>
         <a class="close" href="#" ng-click=closeAuthForm()></a>
