@@ -40,13 +40,15 @@ angular.module('omnibooks.mail', [])
           var msg = ({
             to: emailTo,
             from: emailFrom,
-            subject: "Hey, " + bookOwner + " - You have received an offer on " + bookTitle + "!",
-            // html: "content",
+            subject: "Hey, " + bookOwner + " - You have received an offer on " + bookTitle + "!"
+            /* SCRAP            
+            ,
+            html: "Hi, I am <b>Carter</b>!"
             text: "You have received an offer on " + bookTitle + " for $" + offerAmt + "!\n" +
               "You posted this book for $" + bookAskingPrice + "\n" +
               "You can respond to this offer, by emailing the buyer at " + emailFrom + ".\n"
-              + userMsg + 
-              "\n\nThanks for using OmniBooks!"
+              + userMsg +
+              "\n\nThanks for using OmniBooks!" */
           });
 
           // post request to express routing

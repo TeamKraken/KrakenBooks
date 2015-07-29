@@ -44,8 +44,13 @@ app.post('/sendMail', function(req, res) {
     from: data.from, // sender address
     to: data.to, // list of receivers
     subject: data.subject, // Subject line
-    text: data.text, // plaintext body
+    // text: data.text, // plaintext body
     // html: data.html // html body
+    template: 'email_body',
+    context: {
+      variable1 : 'value1',
+      variable2: 'value2'
+    }
   };
   console.log(mailOptions)
 
@@ -57,6 +62,19 @@ app.post('/sendMail', function(req, res) {
       pass: 'makersquare'
     }
   });
+
+  var options = {
+    viewEngine: {
+      extname: '.hbs',
+      layoutsDir: 'views/email/',
+      defaultLayout: 'template',
+      partialsDir: 'views/partials'
+    },
+    viewPath: 'views/email/',
+    extName: '.hbs'
+  };
+
+  transporter.use('compile', hbs(options));
 
   transporter.sendMail(mailOptions, function(error) {
     if (error) {
