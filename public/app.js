@@ -7,7 +7,8 @@ angular.module('omnibooks', [
     'omnibooks.database',
     'omnibooks.auth',
     'omnibooks.mail',
-    'firebase'
+    'firebase',
+    'ngMock'
   ])
   .config(function($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/home');
@@ -31,7 +32,7 @@ angular.module('omnibooks', [
         url: '/item/:itemId',
         templateUrl: 'html/item.html',
         controller: 'ItemController',
-      })
+      });
   })
   .controller('IndexController', ['$scope', '$location', '$state', '$firebaseObject', 'fireBase',
     function($scope, $location, $state, $firebaseObject, fireBase) {

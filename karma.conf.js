@@ -15,9 +15,14 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular.min.js',
-      'https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.min.js',
-      'https://code.angularjs.org/1.4.3/angular-mocks.js',
+      'node_modules/angular/angular.js',
+      'node_modules/angular-animate/angular-animate.js',
+      'node_modules/angular-ui-router/release/angular-ui-router.js',
+      'node_modules/angular-mocks/angular-mocks.js',
+      'node_modules/angular-xeditable/xeditable.min.js',
+      'public/lib/ng-file-upload.js',
+      "https://cdnjs.cloudflare.com/ajax/libs/gsap/1.17.0/TweenMax.min.js",
+      'bower_components/ngFx/dist/ngFx.js',
       'https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.0/ui-bootstrap.min.js',
       'https://cdn.firebase.com/js/client/2.2.4/firebase.js',
       'https://cdn.firebase.com/libs/angularfire/1.1.2/angularfire.min.js',
@@ -29,7 +34,10 @@ module.exports = function(config) {
 
     // list of files to exclude
     exclude: [
-      'karma.conf.js'
+      'karma.conf.js',
+      'public/js/facebook.js',
+      'public/js/passport.js',
+      'public/js/local.js'
     ],
 
 

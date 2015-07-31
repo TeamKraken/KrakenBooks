@@ -168,7 +168,7 @@ angular.module('omnibooks.database', ['firebase'])
           // TODO do something with authData
           addtoDB(authData);
           console.log("Authenticated successfully with payload:", authData);
-          success(authData);
+          success();
         }
       });
     };
