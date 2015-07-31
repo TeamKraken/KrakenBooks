@@ -2,8 +2,8 @@ angular.module('omnibooks.profile', ['ui.bootstrap','ngFileUpload','xeditable'])
 .run(function(editableOptions) {
   editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
 })
-.controller('ProfileController', ['$scope', '$stateParams', '$modal', '$state', 'auth', 'fireBase', 'bookinfoAPI', 'Upload','$http',
-  function($scope, $stateParams, $modal, $state, auth, fireBase, bookinfoAPI, Upload, $http) {
+.controller('ProfileController', ['$scope', '$stateParams', '$modal', '$state', 'auth', 'fireBase', 'bookinfoAPI', 'productImg', 'Upload','$http',
+  function($scope, $stateParams, $modal, $state, auth, fireBase, bookinfoAPI, productImg, Upload, $http) {
     var currentOrg = auth.getOrg();
     var currentUser = auth.getUser();
       $scope.upload = function (files) {
@@ -53,7 +53,6 @@ angular.module('omnibooks.profile', ['ui.bootstrap','ngFileUpload','xeditable'])
           itemPrice = itemPrice.slice(1);
         }
 
-
         // If a book, send in ISBN to get the rest of the book info and then enter to db
         if(isbn){
 
@@ -71,10 +70,12 @@ angular.module('omnibooks.profile', ['ui.bootstrap','ngFileUpload','xeditable'])
           bookinfoAPI.getInfo(isbn, enterBookItem);
         } else {
         //Otherwise, just enter item into database without book info
+          productImg.getInfo();
           bookDetails = {};
           fireBase.enterItem(currentOrg, currentUser.$id, itemImgUrl, itemName, itemDescription, itemPrice, bookDetails);
           console.log('successfully entered nonbook item');
         }
+
 
       } else{
         $scope.error = "*You must fill out all required fields";
@@ -178,4 +179,29 @@ angular.module('omnibooks.profile', ['ui.bootstrap','ngFileUpload','xeditable'])
     return {
       getInfo: getInfo
     };
-});
+})
+.factory('productImg', function($http) {
+    var getInfo = function(searchindex, keywords) {
+      console.log()
+      return $http({
+          method: 'GET',
+          url: '/productImg',//
+          params: {
+            'SearchIndex': "Electronics",
+            'Keywords': "Apple MacBook Air MJVE2LL/A 13.3-Inch Laptop (128 GB) NEWEST VERSION"
+          }
+        })
+        .then(function(res) {
+          // callback(res.data.data);
+          console.log('productInfo res',res)
+          console.log('Title',     res.data.ItemSearchResponse.Items[0].Item[0].ItemAttributes[0].Title[0]);
+          console.log('ListPrice', res.data.ItemSearchResponse.Items[0].Item[0].ItemAttributes[0].ListPrice[0].FormattedPrice[0]);
+          console.log('UPC',       res.data.ItemSearchResponse.Items[0].Item[0].ItemAttributes[0].UPC[0]);
+          console.log('URL',       res.data.ItemSearchResponse.Items[0].Item[0].ItemLinks[0].ItemLink[0].URL[0]);
+          console.log('Img',       res.data.ItemSearchResponse.Items[0].Item[0].LargeImage[0].URL[0]);
+        });
+    };
+    return {
+      getInfo: getInfo
+    };
+})
