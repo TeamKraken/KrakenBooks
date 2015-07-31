@@ -9,6 +9,7 @@ var session = require('express-session');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
+
 /* SCRAP
 var nodemailer = require('nodemailer');
 var hbs = require('nodemailer-express-handlebars');
@@ -25,6 +26,8 @@ var sendMail = require('./routes/sendMail');
 // Search routes
 var bookDetail = require('./routes/bookDetail');
 var bookInfo = require('./routes/bookInfo');
+var productImg = require('./routes/productImg');
+
 
 // **************** AUTH configure ******************
 // TODO write findById to pull user from db by ID
@@ -80,6 +83,7 @@ app.use(session({
 
 app.use('/bookDetail', bookDetail);
 app.use('/bookInfo', bookInfo);
+app.use('/productImg', productImg);
 app.use('/sendMail', sendMail);
 app.use('/userServices', userServices);
 
