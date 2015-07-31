@@ -3,14 +3,15 @@ var util = require('util'),
 var express = require('express');
 var http = require('http');
 var router = express.Router();
+var configs = require('../config.js');
 
 router.get('/', function(req, res, next) {
   console.log('req.query.SearchIndex',req.query.SearchIndex);
   console.log('req.query.Keywords', req.query.Keywords);
 
 var opHelper = new OperationHelper({
-    awsId:     'AKIAJ43BDLOSN4NRJT3A',
-    awsSecret: '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',
+    awsId:     configs.awsId,
+    awsSecret: configs.awsSecret,
     assocId:   'cartchun-20',
     // xml2jsOptions: an extra, optional, parameter for if you want to pass additional options for the xml2js module. (see https://github.com/Leonidas-from-XIV/node-xml2js#options)
     version:   '2013-08-01'
