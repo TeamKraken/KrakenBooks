@@ -12,7 +12,7 @@
       <a ng-click="toggleEditModal(item)" class="link">
         <img src=" {{item.img}} ">
         <p class="booktitle">  {{ item.name }} </p>
-        <p class="bookauthor">  {{ item.askingPrice}} </p>
+        <p class="bookauthor">  ${{ item.askingPrice}} </p>
       </a>
       <button class="btn btn-default" id='sellButton' class="md-trigger"
         ng-click="toggleDeleteModal(item)">Delete Item</button>

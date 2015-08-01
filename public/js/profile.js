@@ -14,37 +14,6 @@ angular.module('omnibooks.profile', ['ui.bootstrap','ngFileUpload','xeditable'])
       }
     };
 
-    $scope.enterBook = function(url, isbn, price, files) {
-      $scope.upload(files);
-      url = url||'http://books.sorodesign.com/wp-content/uploads/2010/01/book-cover-full-small.jpg'
-      if (isbn && price) {
-        $scope.error = false;
-        if (isbn.charAt(3) === '-') {
-          isbn = isbn.slice(0, 3) + isbn.slice(4)
-          console.log(isbn)
-        }
-        var displayDetail = function(res) {
-           // $scope.prices = res.data.data;
-          title = res[0].title_long;
-          author = res[0].author_data[0].name;
-
-        fireBase.enterBook(currentOrg, currentUser.$id, title, url, author, isbn, price);
-           
-        };
-
-        if (price.charAt(0) === '$') {
-          price = price.slice(1);
-          console.log(price)
-        }
-
-        bookinfoAPI.getInfo(isbn, displayDetail);
-
-      } else {
-        $scope.error = "*You must fill out all required fields";
-      }
-  };
-
-
     $scope.enterItem = function(itemImgUrl, itemName, itemDescription, itemPrice, isbn) {
       if (itemName && itemDescription) {
         $scope.error = false;
@@ -54,39 +23,39 @@ angular.module('omnibooks.profile', ['ui.bootstrap','ngFileUpload','xeditable'])
         }
 
         // If a book, send in ISBN to get the rest of the book info and then enter to db
-        if(isbn){
+        var bookDetails;
+        var awsDetails;
 
           function enterBookItem (res) {
-            var bookDetails = {
+            bookDetails = {
               title: res[0].title_long,
               author: res[0].author_data[0].name,
               isbn: isbn
             };
 
-            fireBase.enterItem(currentOrg, currentUser.$id, itemImgUrl, itemName, itemDescription, itemPrice, bookDetails);
+            fireBase.enterItem(currentOrg, currentUser.$id, itemImgUrl, itemName, itemDescription, itemPrice, bookDetails, awsDetails);
             console.log('successfully entered book item');
           };
 
-          bookinfoAPI.getInfo(isbn, enterBookItem);
-        } else {
         //Otherwise, just enter item into database without book info
-            function enterAnyItem (res) {
-              // var bookDetails = {
-              //   title: res[0].title_long,
-              //   author: res[0].author_data[0].name,
-              //   isbn: isbn
-              // };
-              if (!itemImgUrl){
-                itemImgUrl = res.Img;
-              }
+          function enterAnyItem (res) {
+            awsDetails = res;
+
+            if (!itemImgUrl){
+              itemImgUrl = res.Img;
+            }
+
+            if(isbn){
+              bookinfoAPI.getInfo(isbn, enterBookItem);
+            }else{
               bookDetails = {};
-              fireBase.enterItem(currentOrg, currentUser.$id, itemImgUrl, itemName, itemDescription, itemPrice, bookDetails, res);
-              console.log('successfully entered book item');
-            };
+              fireBase.enterItem(currentOrg, currentUser.$id, itemImgUrl, itemName, itemDescription, itemPrice, bookDetails, awsDetails);
+              console.log('successfully entered book item'); 
+            }
+
+          };
+
           productImg.getInfo(itemName, enterAnyItem);
-          // fireBase.enterItem(currentOrg, currentUser.$id, itemImgUrl, itemName, itemDescription, itemPrice, bookDetails);
-          // console.log('successfully entered nonbook item');
-        }
 
 
       } else{
@@ -136,17 +105,6 @@ angular.module('omnibooks.profile', ['ui.bootstrap','ngFileUpload','xeditable'])
       $scope.itemModalShown = !$scope.itemModalShown;
     }
   };
-
-  $scope.updateBook = function() {
-    var update = {
-      title: $scope.bookEdit.title,
-      author: $scope.bookEdit.author,
-      img: $scope.bookEdit.img,
-      isbn: $scope.bookEdit.isbn,
-      askingPrice: $scope.bookEdit.askingPrice
-    }
-    fireBase.updateBook($scope.org, $scope.username, $scope.bookEdit.$id, update);
-  }
 
   $scope.updateItem = function() {
     var update = {
